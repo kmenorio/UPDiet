@@ -20,7 +20,7 @@ if(isset($_POST["submit"]))
     $result = $db -> query($emailquery);
     $rows = mysqli_fetch_array($result);
 
-    if (is_array($rows)) // if email exists
+    if(is_array($rows)) // if email exists
     {
         echo "<script type='text/javascript'>alert('Email is already taken!');</script>";
         header("refresh:0");
@@ -63,6 +63,6 @@ if(isset($_POST["submit"]))
         <p id="errorMsg"></p>
         <br>
         <p>Have an account? Login <a href="login.php">here</a>.</p>
-        <script src="js/verifyForm.js"></script>
+        <script src="js/index.js"></script>
     </body>
 </html>
