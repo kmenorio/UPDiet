@@ -19,7 +19,7 @@ if(isset($_POST["submit"]))
     $result = $db -> query($loginquery);
     $rows = mysqli_fetch_array($result);
 
-    if (is_array($rows))
+    if(is_array($rows))
     {
         $_SESSION["u_id"] = $rows['u_id'];
 
@@ -29,7 +29,6 @@ if(isset($_POST["submit"]))
     else
     {
         echo "<script type='text/javascript'>alert('Invalid credentials!');</script>";
-        header("refresh:0");
     }
     
 }
@@ -51,6 +50,7 @@ if(isset($_POST["submit"]))
             <input type="password" name="password" id="password"><br>
             <input type="submit" name="submit" value="Signup" id="submit"><br>
         </form>
+        <!-- to update -->
         <p id="errorMsg"></p>
         <br>
         <p>Sign up <a href="index.php">here</a>.</p>
