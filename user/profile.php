@@ -1,6 +1,6 @@
 <?php
 
-include("conn/connect.php");
+include("../conn/connect.php");
 
 error_reporting(0);
 session_start();
@@ -67,8 +67,8 @@ if(isset($_POST['submit']))
                 <button type="button" id="btnEditPasswordCancel" >Cancel</button>
             </form>
         </p><br>
-        <a href="logout.php">Logout</a>
+        <a href="../logout.php">Logout</a>
 
-        <script type="module" src="js/profile.js"></script>
+        <script type="module" src="../js/uprofile.js"></script>
     </body>
 </html>
