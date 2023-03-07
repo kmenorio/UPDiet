@@ -7,38 +7,29 @@ session_start();
 
 if(isset($_SESSION['u_id'])) // if already signed in
 {
-    header("refresh:0;url=profile.php"); // redirects to profile.php; should redirect to store in the future
+    header("location:user/profile.php"); // redirects to profile.php; should redirect to store in the future
 }
 
 if(isset($_POST["submit"]))
 {
-    $username = $_POST["username"];
     $email = $_POST["email"];
     $password = $_POST["password"];
     
-    $emailquery = "SELECT * from users where email='$email';";
-    $result = $db -> query($emailquery);
+    $loginquery = "SELECT * from users where email='$email' && password='".md5($password)."';";
+    $result = $db -> query($loginquery);
     $rows = mysqli_fetch_array($result);
 
-    if(is_array($rows)) // if email exists
+    if(is_array($rows))
     {
-        echo "<script type='text/javascript'>alert('Email is already taken!');</script>";
-        header("refresh:0");
+        $_SESSION["u_id"] = $rows['u_id'];
+
+        header("location:user/profile.php"); // redirects to profile.php; should redirect to store in the future
     }
     else
     {
-        $signupquery = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '".md5($password)."');";
-        $result = $db -> query($signupquery);
-        
-        $loginquery = "SELECT * from users where email='$email' && password='".md5($password)."';";
-        $result = $db -> query($loginquery);
-        $rows = mysqli_fetch_array($result);
-        
-        $_SESSION["u_id"] = $rows['u_id'];
-
-        echo "<script type='text/javascript'>alert('Sign up successful');</script>";
-        header("refresh:0;url=profile.php"); // redirects to profile.php; should redirect to store in the future
+        $_SESSION['u_error'] = "Invalid credentials.";
     }
+    
 }
 
 ?>
@@ -46,23 +37,78 @@ if(isset($_POST["submit"]))
 <!DOCTYPE html>
 <html>
     <head>
-        <title>UPDiet</title>
-    </head>
+        <title>Login</title>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="title" content="Login">
+        <meta name="description" content="Login page for UPDiet website">
+
+        <link rel="icon" href="img/logo.png" type="image/png">
+
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/login.css">
+    </head>
+    
     <body>
-        <p>Sign Up</p>
-        <form method="post" action="">
-            <label for="username">Username:</label><br>
-            <input type="text" name="username" id="username" maxlength="10"><br>
-            <label for="email">Email:</label><br>
-            <input type="text" name="email" id="email"><br>
-            <label for="password">Password:</label><br>
-            <input type="password" name="password" id="password"><br>
-            <input type="submit" name="submit" value="Signup" id="submit" disabled="disabled"><br>
-        </form>
-        <p id="errorMsg"></p>
-        <br>
-        <p>Have an account? Login <a href="login.php">here</a>.</p>
-        <script src="js/index.js"></script>
+        <div class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-u">U</span><span class="logo-p">P</span><span class="logo-diet">DIET</span>
+                </div>
+                <div class="navbar">
+                    <a href="#" class="nav-home">Home</a>
+                    <a href="#" class="nav-menu">Menu</a>
+                    <a href="#" class="nav-contact">Contact</a>
+                    <a href="#" class="nav-shop">Shop</a>
+                </div>
+                <div class="search">
+                    <input type="text" name="search" id="search" placeholder="Search">
+                </div>
+            </div>
+            <div class="nav-body">
+                <div class="slogan">
+                    <img src="img/logo.png" />
+                    <p class="l1">it's not just <span>Food</span></p>
+                    <p class="l2">it's an <span>Experience</span></p>
+                </div>
+                <div class="buttons">
+                    <div class="order">
+                        <button class="order-button">Order Now</button>
+                    </div>
+                    <div class="watch">
+                        <button class="watch-button"><img src="img/play.png" /></button>
+                        <p>Watch Video</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <form action="" method="post">
+                <div class="form-header">
+                    <div class="header-signup">
+                        <div>
+                            <img src="img/user.png" />
+                            <a href="user/signup.php">Sign Up</a>
+                        </div>
+                    </div>
+                    <div class="header-login">
+                        <div>
+                            <img src="img/login.png" />
+                            <a href="index.php">Login</a>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" placeholder="UP Mail" name="email" id="email" required>
+                <input  id="password" type="password" placeholder="Password" name="password" required>
+                <p class="error" id="error"><?php if(isset($_SESSION['u_error'])){echo $_SESSION["u_error"]; unset($_SESSION["u_error"]);} ?></p>
+                <input class="submit" type="submit" name="submit" value="Login" id="submit">
+            </form>
+        </div>
+        <div class="flair">
+        </div>
+        <script src="js/login.js"></script>
     </body>
 </html>

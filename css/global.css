@@ -1,0 +1,9 @@
+@font-face {
+    font-family: OpenSans;
+    src: url("../font/OpenSans.ttf");
+}
+
+body {
+    height: 100%;
+    font-family: OpenSans;
+}
